@@ -1,0 +1,108 @@
+/*
+swithABV v1.7.0
+Licensed: MIT.
+Developed: Alevi Rodriguez.
+Since: 2023
+*/
+.container-swithABV {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: left;
+	align-items: center;
+	box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
+	border-radius: 40px;
+	-moz-border-radius: 40px;
+	-webkit-border-radius: 40px;
+	background-color: #e7e7e726;
+	position: relative;
+
+}
+
+.flex-container {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	margin: 4px;
+}
+
+.container-left {
+	display: flex;
+	flex: 0;
+	background-color: #1aaee5;
+	border-radius: 50px;
+	margin-right: 7px;
+	z-index: 1;
+}
+
+.container-right {
+	flex: 18;
+	padding: 0.2rem;
+	background-color: #efefef30;
+	border-radius: 50px;
+	z-index: 1;
+}
+
+.contains-information {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	white-space: nowrap;
+	color: white;
+}
+.information-text p {
+	max-height: 0px;
+}
+
+.contains-button-confirm{
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+}
+.contains-icon {
+    padding: 6px;
+}
+.complement-ico{
+    display: flex;
+    align-items: center;
+	border-radius: 50%;
+	color: white;
+}
+
+.text-information{
+	margin: 0px;
+	font-size: calc(10px + 1vw);
+}
+.text-confirmation{
+	margin: 0px;
+	font-size: calc(8px + 1vw);
+	color: #1aaee5;
+}
+.pulse{
+	background-image: url("./pulse.gif"); 
+    height: 37px;
+	width: 20px;
+    background-position: center;
+    background-size: 22px;
+    background-repeat: no-repeat;
+}
+
+.loading-swithABV{
+	background-image: url("./loading.gif"); 
+    height: 37px;
+    background-position: center;
+    background-size: 75px;
+    background-repeat: no-repeat;
+}
+
+.contains-texto-inicio {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	white-space: nowrap;
+	position: absolute;
+	color: white;
+}
+
