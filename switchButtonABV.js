@@ -5,8 +5,8 @@ const defineStandarColors =  {
         default: '#005EA4'
     },
     __CONTAINER_ONE__: {
-        backgroundFlex: 'purple',
-        backgroundIcono:'purple',
+        backgroundFlex: '#1aaee5',
+        backgroundIcono:'#1aaee5',
         ico: 'ico-chevron_right'
     },
     __CONTAINER_TWO__: {
@@ -23,17 +23,24 @@ const defineStandarColors =  {
 
 const UseSwithButtonABV = (_vm) => {
     return new Promise((resolve, reject) => {
-        
         if(_vm.options.show) {
             let building = templateSwithABV(_vm);
             _vm.options.disableButton ?  disableControlSwithABV() : enableControlSwithABV(_vm);
         }
 
+        let doubleClick = false;
         let switchABV_Confirm = document.getElementById('swithABV-confirm');
         switchABV_Confirm.addEventListener("click", () => {
-            let idCONFIRM = document.getElementById('swithABV-confirm')
-            idCONFIRM = idCONFIRM.classList.contains('bloqueo');
-            !idCONFIRM ? (loadingswithABV(), resolve(true) ) : (reject('fail'));
+            let switchConfirm = document.getElementById('swithABV-confirm');
+            hasClassBtnDisable = switchConfirm.classList.contains('btn-disabled');
+
+            if(!hasClassBtnDisable){
+                if(!doubleClick){
+                    loadingswithABV(), 
+                    resolve(true)
+                    doubleClick = true;
+                }
+            }
         });
 
     })
@@ -49,11 +56,15 @@ const templateSwithABV = (_vm) => {
     let customBackgroundNodeContainer = _vm.configurable.content_node === '' ||  _vm.configurable.content_node !== undefined ? 
     (_vm.configurable.content_node.customizable) : (defineStandarColors.__CONTAINER_NODE__.default);
 
+    let customColorText = _vm.configurable.content_one_button.useColor === '' ||  _vm.configurable.content_one_button.useColor !== undefined ? 
+    (_vm.configurable.content_one_button.useColor.colorText)  : ( defineStandarColors.__CONTAINER_ONE__.backgroundIcono);
+
 
     let construcButtonSlider = document.getElementById('SwitchABV');
     construcButtonSlider.innerHTML = '';
     construcButtonSlider.innerHTML = `
     <div class="container-swithABV" style="background-color: ${customBackgroundNodeContainer}">
+    <div class="contains-texto-inicio" id="contains-texto-inicio">NUEVO TEXTO</div>
     <div class="flex-container">
         <div class="container-left" style="background-color: ${customBackgroundColor}">
             <div id="swithABV-on">
@@ -61,7 +72,7 @@ const templateSwithABV = (_vm) => {
                     <i class="complement-ico ico ico32 ${defineStandarColors.__CONTAINER_ONE__.ico}"  style="background-color: ${customBackgroundColor}"></i>
                 </div>
             </div>
-            <div class="contains-information" id="contains-information"></div>
+            <div class="contains-information" id="contains-information" style= "color: ${customColorText}"></div>
         </div>
         <div class="container-right d-none">
             <div class="contains-button-confirm">
@@ -78,8 +89,8 @@ const enableControlSwithABV = (_vm) => {
     let switchABV_ON = document.getElementById('swithABV-on');
     switchABV_ON.addEventListener("click", () => {
 
-        let BackgroundContentONEDefalutOrValue =  _vm.configurable.content_one_button.useColor === '' ||  _vm.configurable.content_one_button.useColor !== undefined ? (_vm.configurable.content_one_button.useColor.backgroundText) : ( defineStandarColors.__CONTAINER_ONE__.backgroundFlex);
-        let BackgroundContentTWODefalutOrValue =  _vm.configurable.content_two_button.useColor === '' ||  _vm.configurable.content_two_button.useColor !== undefined ? (_vm.configurable.content_two_button.useColor.backgroundText) : ( defineStandarColors.__CONTAINER_TWO__.backgroundFlex);
+        let BackgroundContentONEDefalutOrValue =  _vm.configurable.content_one_button.useColor === '' ||  _vm.configurable.content_one_button.useColor !== undefined ? (_vm.configurable.content_one_button.useColor.backgroundButton) : ( defineStandarColors.__CONTAINER_ONE__.backgroundFlex);
+        let BackgroundContentTWODefalutOrValue =  _vm.configurable.content_two_button.useColor === '' ||  _vm.configurable.content_two_button.useColor !== undefined ? (_vm.configurable.content_two_button.useColor.backgroundButton) : ( defineStandarColors.__CONTAINER_TWO__.backgroundFlex);
         let backgroundIconDefalutOrValue =  _vm.configurable.content_one_button.useColor === '' ||  _vm.configurable.content_one_button.useColor !== undefined ? (_vm.configurable.content_one_button.useColor.backgroundIco)  : ( defineStandarColors.__CONTAINER_ONE__.backgroundIcono);
         
         switchABV_ON.classList.toggle('active');
@@ -145,6 +156,7 @@ const enableControlSwithABV = (_vm) => {
             controlSwitchABV.divLeft.container_left.style.flex = controlTransitions.container_left.flexON;
             controlSwitchABV.divLeft.container_left.style.background = controlColorsAndStyleDefault.container_left.backgroundColorON;
             controlSwitchABV.divLeft.container_left.style.transition = controlTransitions.container_left.smoothEffect;
+            controlSwitchABV.divLeft.container_left.style.zIndex = 1
 
             controlSwitchABV.divLeft.contains_information.innerHTML = controlInformation.addTextOnDivLeft;
             controlSwitchABV.divLeft.contains_information.style.background = controlTransitions.container_left.backgroundColorON;
@@ -198,6 +210,7 @@ const loadingswithABV = () => {
             smoothEffect: 'all 1.3s ease 0s',
         },
         container_right: {
+            flexON: 8,
             smoothEffect: 'all 0.3s ease 0s',
         }
     };
@@ -211,21 +224,21 @@ const loadingswithABV = () => {
             confirm: document.querySelector('.swithABV-confirm'),
         },
     };
-    let loadingBootstrap = `<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>`;
+
     const controlInformation = {
         addTextOnDivLeft: `<p class="text-information">Espera un momento</p>`,
         addTextOFFDivLeft: '',
-        addTextOnDivRight: loadingBootstrap,
+        addTextOnDivRight: `<div class="loading-swithABV"></div>`,
         addTextOFFDivRight: '',
     };
 
 
     controlSwitchABV.divLeft.container_left.style.flex = controlTransitions.container_left.flexON;
+    controlSwitchABV.divRight.container_right.style.flex = controlTransitions.container_right.flexON;
     controlSwitchABV.divLeft.container_left.style.transition = controlTransitions.container_left.smoothEffect;
     controlSwitchABV.divLeft.contains_information.innerHTML = controlInformation.addTextOnDivLeft;
     controlSwitchABV.divRight.confirm.innerHTML = controlInformation.addTextOFFDivRight;
     controlSwitchABV.divRight.confirm.innerHTML = controlInformation.addTextOnDivRight;
-
 }
 
 const SwithButtonABVFinished = (status_success) => {
@@ -273,9 +286,11 @@ const SwithButtonABVFinished = (status_success) => {
     (status_success.configurable.content_node.success) : ('') ) :
     (defineStandarColors.__CONTAINER_NODE__.default);
 
+    controlSwitchABV.divLeft.container_left.style.zIndex = -1
     controlSwitchABV.divLeft.container_left.style.flex = controlTransitions.container_left.flexON;
     controlSwitchABV.divRight.container_right.style.flex = controlTransitions.container_right.flexON;
-    controlSwitchABV.divRight.container_right.style.transition = controlTransitions.container_right.smoothEffect;
+    // controlSwitchABV.divRight.container_right.style.transition = controlTransitions.container_right.smoothEffect;
+    
 
     controlSwitchABV.divRight.confirm.innerHTML = controlInformation.addTextOFFDivRight;
     controlSwitchABV.divRight.confirm.innerHTML = controlInformation.addTextOnDivRight;
@@ -285,10 +300,8 @@ const SwithButtonABVFinished = (status_success) => {
     controlSwitchABV.divLeft.contains_information.innerHTML = controlInformation.addTextOFFDivRight;
     controlSwitchABV.divLeft.contains_ico.innerHTML = controlIcons.cleanIcon;
 
-    controlSwitchABV.divLeft.container_left.style.background  =  customBackgroundNodeContainer;
+    controlSwitchABV.divLeft.container_left.style.background  =  'rgb(0 94 164 / 0%)';
+    controlSwitchABV.divLeft.container_left.style.transition = 'all 0s ease 0s'
     controlSwitchABV.divNone.containerNode.style.background   =  customBackgroundNodeContainer;
-        
-    //Bloquear boton
-    controlSwitchABV.divRight.confirm.classList.add('bloqueo');
-
+    controlSwitchABV.divRight.confirm.classList.add('btn-disabled');
 };
