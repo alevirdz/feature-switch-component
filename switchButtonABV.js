@@ -1,5 +1,4 @@
 
-
 const defineStandarColors =  {
     __CONTAINER_NODE__: {
         success: '#00A887',
@@ -41,24 +40,25 @@ const UseSwithButtonABV = (_vm) => {
 };
 
 const templateSwithABV = (_vm) => {
-    let construcButtonSlider = document.getElementById('SwitchABV');
-
+    
     let customBackgroundColor = _vm.configurable.content_one_button.useColor === '' ||  _vm.configurable.content_one_button.useColor !== undefined ? 
     (_vm.configurable.content_one_button.useColor.backgroundIco)  :
     (_vm.options.disableButton ? (defineStandarColors.__DISABLED_SwithABV__.backgroundIco) : 
     (defineStandarColors.__CONTAINER_ONE__.backgroundIcono));
 
-    let customBackgroundColorContainer = defineStandarColors.__CONTAINER_NODE__.default;
+    let customBackgroundNodeContainer = _vm.configurable.content_node === '' ||  _vm.configurable.content_node !== undefined ? 
+    (_vm.configurable.content_node.customizable) : (defineStandarColors.__CONTAINER_NODE__.default);
 
 
+    let construcButtonSlider = document.getElementById('SwitchABV');
     construcButtonSlider.innerHTML = '';
     construcButtonSlider.innerHTML = `
-    <div class="container-swithABV" style="background-color: ${customBackgroundColorContainer}">
+    <div class="container-swithABV" style="background-color: ${customBackgroundNodeContainer}">
     <div class="flex-container">
         <div class="container-left" style="background-color: ${customBackgroundColor}">
             <div id="swithABV-on">
                 <div class="contains-icon">
-                    <i class="complement-ico ico ico32 ${defineStandarColors.__CONTAINER_ONE__.ico}"></i>
+                    <i class="complement-ico ico ico32 ${defineStandarColors.__CONTAINER_ONE__.ico}"  style="background-color: ${customBackgroundColor}"></i>
                 </div>
             </div>
             <div class="contains-information" id="contains-information"></div>
@@ -71,11 +71,8 @@ const templateSwithABV = (_vm) => {
             </div>
         </div>
     </div>
-</div>
-`;
+</div>`;
 };
-
-
 
 const enableControlSwithABV = (_vm) => {
     let switchABV_ON = document.getElementById('swithABV-on');
@@ -186,10 +183,8 @@ const disableControlSwithABV = () => {
         divLeft:{
             container_left: document.querySelector('.container-right'),
             background_ico: document.querySelector('.complement-ico'),
-            
         },
     };
-
     controlSwitchABV.divNone.containerNode.style.background     =  defineStandarColors.__DISABLED_SwithABV__.backgroundNode;
     controlSwitchABV.divLeft.container_left.style.background  =  defineStandarColors.__DISABLED_SwithABV__.backgroundIco
     controlSwitchABV.divLeft.background_ico.style.background   =  defineStandarColors.__DISABLED_SwithABV__.backgroundIco
@@ -199,15 +194,41 @@ const disableControlSwithABV = () => {
 const loadingswithABV = () => {
     const controlTransitions = {
         container_left:{
-            flexON: 60,
-            flexOFF: 0,
+            flexON: 100,
             smoothEffect: 'all 1.3s ease 0s',
         },
         container_right: {
             smoothEffect: 'all 0.3s ease 0s',
         }
-    }
+    };
+    const controlSwitchABV = {
+        divLeft:{
+            container_left: document.querySelector('.container-left'),
+            contains_information: document.querySelector('.contains-information'),
+        },
+        divRight:{
+            container_right: document.querySelector('.container-right'),
+            confirm: document.querySelector('.swithABV-confirm'),
+        },
+    };
+    let loadingBootstrap = `<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>`;
+    const controlInformation = {
+        addTextOnDivLeft: `<p class="text-information">Espera un momento</p>`,
+        addTextOFFDivLeft: '',
+        addTextOnDivRight: loadingBootstrap,
+        addTextOFFDivRight: '',
+    };
 
+
+    controlSwitchABV.divLeft.container_left.style.flex = controlTransitions.container_left.flexON;
+    controlSwitchABV.divLeft.container_left.style.transition = controlTransitions.container_left.smoothEffect;
+    controlSwitchABV.divLeft.contains_information.innerHTML = controlInformation.addTextOnDivLeft;
+    controlSwitchABV.divRight.confirm.innerHTML = controlInformation.addTextOFFDivRight;
+    controlSwitchABV.divRight.confirm.innerHTML = controlInformation.addTextOnDivRight;
+
+}
+
+const SwithButtonABVFinished = (status_success) => {
     const controlSwitchABV = {
         divNone: {
             containerNode: document.querySelector('.container-swithABV'),
@@ -215,7 +236,6 @@ const loadingswithABV = () => {
         divLeft:{
             container_left: document.querySelector('.container-left'),
             contains_ico: document.querySelector('.contains-icon'),
-            background_ico: document.querySelector('.complement-ico'),
             contains_information: document.querySelector('.contains-information'),
             
         },
@@ -225,35 +245,16 @@ const loadingswithABV = () => {
         },
     };
 
-        controlSwitchABV.divLeft.container_left.style.flex = 100;
-        controlSwitchABV.divLeft.container_left.style.transition = controlTransitions.container_left.smoothEffect;
-
-        
-        let loadingBootstrap = `<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>`
-
-        controlSwitchABV.divLeft.contains_information.innerHTML = 'Espera un momento';
-
-        controlSwitchABV.divRight.confirm.innerHTML = '';
-        controlSwitchABV.divRight.confirm.innerHTML = loadingBootstrap;
-
-}
-
-const SwithButtonABVFinished = () => {
-    const controlSwitchABV = {
-        divNone: {
-            containerNode: document.querySelector('.container-swithABV'),
+    const controlTransitions = {
+        container_left:{
+            flexON: 100,
+            smoothEffect: 'all 1.3s ease 0s',
         },
-        divLeft:{
-            container_left: document.querySelector('.container-left'),
-            contains_ico: document.querySelector('.contains-icon'),
-            background_ico: document.querySelector('.complement-ico'),
-            contains_information: document.querySelector('.contains-information'),
-            
-        },
-        divRight:{
-            container_right: document.querySelector('.container-right'),
-            confirm: document.querySelector('.swithABV-confirm'),
-        },
+        container_right: {
+            flexON: 7,
+            smoothEffect: 'all 0.3s ease 0s',
+            boxShadow: 'rgba(0, 0, 0, 0.5) 0px 0px 8px',
+        }
     };
 
     const controlIcons = {
@@ -261,25 +262,33 @@ const SwithButtonABVFinished = () => {
     };
 
     const controlInformation = {
+        addTextOnDivLeft: `<p class="text-information">Espera un momento</p>`,
         addTextOFFDivLeft: '',
+        addTextOnDivRight: `<i class="ico ico32 ico-check"></i>`,
         addTextOFFDivRight: '',
     };
 
-        controlSwitchABV.divLeft.container_left.style.flex = 100;
-        controlSwitchABV.divRight.container_right.style.flex = 10;
+    let customBackgroundNodeContainer = status_success === '' ||  status_success !== undefined ? 
+    (status_success.configurable.content_node.success  === '' ||  status_success.configurable.content_node.success !== undefined ? 
+    (status_success.configurable.content_node.success) : ('') ) :
+    (defineStandarColors.__CONTAINER_NODE__.default);
 
-        let nuevoicono = `@`
-        controlSwitchABV.divRight.confirm.innerHTML = '';
-        controlSwitchABV.divRight.confirm.innerHTML = nuevoicono;
-        controlSwitchABV.divRight.confirm.style.color  =  'black'
+    controlSwitchABV.divLeft.container_left.style.flex = controlTransitions.container_left.flexON;
+    controlSwitchABV.divRight.container_right.style.flex = controlTransitions.container_right.flexON;
+    controlSwitchABV.divRight.container_right.style.transition = controlTransitions.container_right.smoothEffect;
 
-        controlSwitchABV.divLeft.contains_information.innerHTML = controlInformation.addTextOFFDivRight;
-        controlSwitchABV.divLeft.contains_ico.innerHTML = controlIcons.cleanIcon;
-        controlSwitchABV.divLeft.container_left.style.background  =  defineStandarColors.__CONTAINER_NODE__.success;
+    controlSwitchABV.divRight.confirm.innerHTML = controlInformation.addTextOFFDivRight;
+    controlSwitchABV.divRight.confirm.innerHTML = controlInformation.addTextOnDivRight;
+    controlSwitchABV.divRight.confirm.style.color  =  defineStandarColors.__CONTAINER_NODE__.success;
+    controlSwitchABV.divRight.container_right.style["boxShadow"] = controlTransitions.container_right.boxShadow;
+    
+    controlSwitchABV.divLeft.contains_information.innerHTML = controlInformation.addTextOFFDivRight;
+    controlSwitchABV.divLeft.contains_ico.innerHTML = controlIcons.cleanIcon;
 
-        controlSwitchABV.divNone.containerNode.style.background   =  defineStandarColors.__CONTAINER_NODE__.success;
+    controlSwitchABV.divLeft.container_left.style.background  =  customBackgroundNodeContainer;
+    controlSwitchABV.divNone.containerNode.style.background   =  customBackgroundNodeContainer;
         
     //Bloquear boton
     controlSwitchABV.divRight.confirm.classList.add('bloqueo');
 
-}
+};
