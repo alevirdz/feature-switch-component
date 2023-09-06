@@ -1,25 +1,37 @@
 
 const UseSwithButtonABV = (_vm) => {
-    const defineStandarColors =  {
-        __CONTAINER_ONE__: {
-            backgroundFlex: 'purple',
-            backgroundIcono:'purple'
-        },
-        __CONTAINER_TWO__: {
-            backgroundFlex: '#FFFFFF',
-            colorText: '#1aaee5'
-        },
-        __DISABLED_SwithABV__: {
-            backgroundNode: '#B6B6B6',
-            backgroundIco: '#CACACA',
-            colorIco: '#979797',
-        }
-    };
+    return new Promise((resolve, reject) => {
+        const defineStandarColors =  {
+            __CONTAINER_ONE__: {
+                backgroundFlex: 'purple',
+                backgroundIcono:'purple'
+            },
+            __CONTAINER_TWO__: {
+                backgroundFlex: '#FFFFFF',
+                colorText: '#1aaee5'
+            },
+            __DISABLED_SwithABV__: {
+                backgroundNode: '#B6B6B6',
+                backgroundIco: '#CACACA',
+                colorIco: '#979797',
+            }
+        };
+    
+        if(_vm.options.show) {
+            let building = templateSwithABV(_vm, defineStandarColors);
+            _vm.options.disableButton ?  disableControlSwithABV(defineStandarColors) : enableControlSwithABV(_vm, defineStandarColors);
+        }  
 
-    if(_vm.options.show) {
-        let building = templateSwithABV(_vm, defineStandarColors);
-        _vm.options.disableButton ?  disableControlSwithABV(defineStandarColors) : enableControlSwithABV(_vm, defineStandarColors);
-    }
+
+        let switchABV_Confirm = document.getElementById('swithABV-confirm');
+        switchABV_Confirm.addEventListener("click", () => {
+            // _vm.callFunction === '' || _vm.callFunction === undefined ? (console.warn("The button was deactivated!")) : (eval(`${_vm.callFunction}()`));
+            let idCONFIRM = document.getElementById('swithABV-confirm')
+            idCONFIRM = idCONFIRM.classList.contains('bloqueo');
+            !idCONFIRM ? (loadingswithABV(), resolve(true) ) : (reject('fail'));
+        });
+
+    })
 };
 
 const templateSwithABV = (_vm, _defineStandarColors) => {
@@ -151,17 +163,8 @@ const enableControlSwithABV = (_vm, _defineStandarColors) => {
         }
     });
 
-    let switchABV_Confirm = document.getElementById('swithABV-confirm');
-    switchABV_Confirm.addEventListener("click", () => {
-        // _vm.callFunction === '' || _vm.callFunction === undefined ? (console.warn("The button was deactivated!")) : (eval(`${_vm.callFunction}()`));
 
 
-
-
-
-        
-
-    });
 
 };
 
@@ -184,3 +187,91 @@ const disableControlSwithABV = (_defineStandarColors) => {
     controlSwitchABV.divRight.background_ico.style.background   =  _defineStandarColors.__DISABLED_SwithABV__.backgroundIco
     controlSwitchABV.divRight.background_ico.style.color =      _defineStandarColors.__DISABLED_SwithABV__.colorIco;
 };
+
+
+
+
+
+
+const loadingswithABV = () => {
+    console.log("CLICK")
+    const controlTransitions = {
+        container_right:{
+            flexON: 60,
+            flexOFF: 0,
+            smoothEffect: 'all 1.3s ease 0s',
+        },
+        container_left: {
+            smoothEffect: 'all 0.3s ease 0s',
+        }
+    }
+
+    const controlSwitchABV = {
+        divNone: {
+            containerNone: document.querySelector('.container-swithABV'),
+        },
+        divRight:{
+            container_right: document.querySelector('.container-right'),
+            contains_ico: document.querySelector('.contains-icon'),
+            background_ico: document.querySelector('.complement-ico'),
+            contains_information: document.querySelector('.contains-information'),
+            
+        },
+        divLeft:{
+            container_left: document.querySelector('.container-left'),
+            confirm: document.querySelector('.swithABV-confirm'),
+        },
+    };
+
+
+        controlSwitchABV.divRight.container_right.style.flex = 100;
+        controlSwitchABV.divRight.container_right.style.transition = controlTransitions.container_right.smoothEffect;
+
+        
+        let loadingBootstrap = `<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>`
+
+        controlSwitchABV.divRight.contains_information.innerHTML = 'Espera un momento';
+
+        controlSwitchABV.divLeft.confirm.innerHTML = '';
+        controlSwitchABV.divLeft.confirm.innerHTML = loadingBootstrap;
+
+
+
+        bandera = true;
+
+}
+
+const finalizarWith = () => {
+    const controlSwitchABV = {
+        divNone: {
+            containerNone: document.querySelector('.container-swithABV'),
+        },
+        divRight:{
+            container_right: document.querySelector('.container-right'),
+            contains_ico: document.querySelector('.contains-icon'),
+            contains_information: document.querySelector('.contains-information'),
+            
+        },
+        divLeft:{
+            container_left: document.querySelector('.container-left'),
+            confirm: document.querySelector('.swithABV-confirm'),
+        },
+    };
+
+
+        controlSwitchABV.divRight.container_right.style.flex = 100;
+        controlSwitchABV.divLeft.container_left.style.flex = 10;
+
+        let nuevoicono = `@`
+        controlSwitchABV.divLeft.confirm.innerHTML = '';
+        controlSwitchABV.divLeft.confirm.innerHTML = nuevoicono;
+        controlSwitchABV.divRight.contains_information.innerHTML = '';
+
+        controlSwitchABV.divRight.contains_ico.innerHTML = '';
+        controlSwitchABV.divRight.container_right.style.background  =  '#00A887'
+        controlSwitchABV.divNone.containerNone.style.background  =  '#00A887'
+        
+    //Bloquear boton
+    controlSwitchABV.divLeft.confirm.classList.add('bloqueo');
+
+}
